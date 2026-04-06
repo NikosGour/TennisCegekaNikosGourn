@@ -39,6 +39,11 @@ internal class Game
 
         int scoringTeamSets = GetSets(team);
 
+        if (hasWonGame(team) || hasWonGame(team.GetOtherTeam()))
+        {
+            throw new InvalidOperationException("The game has already been won");
+        }
+
         var (newScoringPoints, newNonScoringPoints, newScoringSets) = (scoringTeamPoints: scoringTeamPoints, nonScoringTeamPoints: nonScoringTeamPoints) switch
         {
             { scoringTeamPoints: Points.LOVE } => (Points.FIFTEEN, nonScoringTeamPoints, scoringTeamSets),
