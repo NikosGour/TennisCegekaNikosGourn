@@ -2,14 +2,20 @@
 
 internal class Game
 {
-    public Game(Points homePlayerPoints, Points awayPlayerPoints) : this()
+    int homeTeamSets;
+    int awayTeamSets;
+
+    int homeTeamPoints;
+    int awayTeamPoints;
+
+    public Game(Points homeTeamPoints, Points awayTeamPoints) : this()
     {
     }
-    public Game(int homePlayerSets, int awayPlayerSets) : this(Points.LOVE, Points.LOVE)
+    public Game(int homeTeamSets, int awayTeamSets) : this(Points.LOVE, Points.LOVE)
     {
     }
 
-    public Game(Points homePlayerPoints, Points awayPlayerPoints, int homePlayerSets, int awayPlayerSets) : this(homePlayerPoints, awayPlayerPoints)
+    public Game(Points homeTeamPoints, Points awayTeamPoints, int homeTeamSets, int awayTeamSets) : this(homeTeamPoints, awayTeamPoints)
     {
     }
 
@@ -18,7 +24,7 @@ internal class Game
     }
 
 
-    internal void PlayerScores(Teams team)
+    internal void TeamScores(Teams team)
     {
         throw new NotImplementedException();
     }

@@ -16,12 +16,12 @@ public class GameTests
     [InlineData(Points.LOVE, Points.FORTY, Points.LOVE, Teams.AWAY)]
     [InlineData(Points.FORTY, Points.FORTY, Points.ADVANTAGE, Teams.HOME)]
     [InlineData(Points.FORTY, Points.FORTY, Points.ADVANTAGE, Teams.AWAY)]
-    public void TestScorePoint(Points homePlayerPoints, Points awayPlayerPoints, Points expectedPoints, Teams pointScoringTeam)
+    public void TestScorePoint(Points homeTeamPoints, Points awayTeamPoints, Points expectedPoints, Teams pointScoringTeam)
     {
-        Game game = new(homePlayerPoints, awayPlayerPoints);
-        Points expectedPointsNonScoringTeam = pointScoringTeam == Teams.HOME ? awayPlayerPoints : homePlayerPoints;
+        Game game = new(homeTeamPoints, awayTeamPoints);
+        Points expectedPointsNonScoringTeam = pointScoringTeam == Teams.HOME ? awayTeamPoints : homeTeamPoints;
 
-        game.PlayerScores(pointScoringTeam);
+        game.TeamScores(pointScoringTeam);
 
         Assert.Equal(expectedPoints, game.GetScore(pointScoringTeam));
         Assert.Equal(expectedPointsNonScoringTeam, game.GetScore(pointScoringTeam.GetOtherTeam()));
@@ -40,12 +40,12 @@ public class GameTests
     [InlineData(Points.FORTY, Points.FORTY, 0, Teams.AWAY)]
     [InlineData(Points.ADVANTAGE, Points.FORTY, 1, Teams.HOME)]
     [InlineData(Points.FORTY, Points.ADVANTAGE, 1, Teams.AWAY)]
-    public void TestScorePointSets(Points homePlayerPoints, Points awayPlayerPoints, int expectedSets, Teams pointScoringTeam)
+    public void TestScorePointSets(Points homeTeamPoints, Points awayTeamPoints, int expectedSets, Teams pointScoringTeam)
     {
-        Game game = new(homePlayerPoints, awayPlayerPoints);
+        Game game = new(homeTeamPoints, awayTeamPoints);
         int expectedSetsNonScoringTeam = game.GetSets(pointScoringTeam.GetOtherTeam());
 
-        game.PlayerScores(pointScoringTeam);
+        game.TeamScores(pointScoringTeam);
 
         Assert.Equal(expectedSets, game.GetSets(pointScoringTeam));
         Assert.Equal(expectedSetsNonScoringTeam, game.GetSets(pointScoringTeam.GetOtherTeam()));
@@ -68,14 +68,14 @@ public class GameTests
     [InlineData(50, 50, false, Teams.AWAY)]
     [InlineData(50, 49, true, Teams.HOME)]
     [InlineData(49, 50, true, Teams.AWAY)]
-    public void TestScorePointWinGame(int homePlayerSets, int awayPlayerSets, bool hasScoringTeamWon, Teams pointScoringTeam)
+    public void TestScorePointWinGame(int homeTeamSets, int awayTeamSets, bool hasScoringTeamWon, Teams pointScoringTeam)
     {
-        Points homePlayerPoints = pointScoringTeam == Teams.HOME ? Points.LOVE : Points.FORTY;
-        Points awayPlayerPoints = pointScoringTeam == Teams.AWAY ? Points.LOVE : Points.FORTY;
+        Points homeTeamPoints = pointScoringTeam == Teams.HOME ? Points.LOVE : Points.FORTY;
+        Points awayTeamPoints = pointScoringTeam == Teams.AWAY ? Points.LOVE : Points.FORTY;
         bool hasNonScoringTeamWon = !hasScoringTeamWon;
-        Game game = new(homePlayerPoints, awayPlayerPoints, homePlayerSets, awayPlayerSets);
+        Game game = new(homeTeamPoints, awayTeamPoints, homeTeamSets, awayTeamSets);
 
-        game.PlayerScores(pointScoringTeam);
+        game.TeamScores(pointScoringTeam);
 
         Assert.Equal(hasScoringTeamWon, game.hasWonGame(pointScoringTeam));
         Assert.Equal(hasNonScoringTeamWon, game.hasWonGame(pointScoringTeam.GetOtherTeam()));
@@ -98,18 +98,17 @@ public class GameTests
     [InlineData(48, 50, true, Teams.AWAY)]
     [InlineData(50, 49, false, Teams.HOME)]
     [InlineData(49, 50, false, Teams.AWAY)]
-    public void TestScorePointAlreadyWonGame(int homePlayerSets, int awayPlayerSets, bool alreadyWonGame, Teams pointScoringTeam)
+    public void TestScorePointAlreadyWonGame(int homeTeamSets, int awayTeamSets, bool alreadyWonGame, Teams pointScoringTeam)
     {
-        Game game = new(homePlayerSets, awayPlayerSets);
-
+        Game game = new(homeTeamSets, awayTeamSets);
 
         if (alreadyWonGame)
         {
-            Assert.Throws<InvalidOperationException>(() => game.PlayerScores(pointScoringTeam));
+            Assert.Throws<InvalidOperationException>(() => game.TeamScores(pointScoringTeam));
         }
         else
         {
-            game.PlayerScores(pointScoringTeam);
+            game.TeamScores(pointScoringTeam);
         }
     }
 }
