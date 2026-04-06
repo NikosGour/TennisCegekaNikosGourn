@@ -37,16 +37,31 @@ internal class Game
 
     internal Points GetScore(Teams team)
     {
-        throw new NotImplementedException();
+        return team switch
+        {
+            Teams.HOME => homeTeamPoints,
+            Teams.AWAY => awayTeamPoints,
+            _ => throw new ArgumentException("Invalid team")
+        };
     }
 
-    internal int GetSets(Teams pointScoringTeam)
+    internal int GetSets(Teams team)
     {
-        throw new NotImplementedException();
+        return team switch
+    {
+            Teams.HOME => homeTeamSets,
+            Teams.AWAY => awayTeamSets,
+            _ => throw new ArgumentException("Invalid team")
+        };
     }
 
-    internal bool hasWonGame(Teams pointScoringTeam)
+    internal bool hasWonGame(Teams team)
     {
-        throw new NotImplementedException();
+        return team switch
+    {
+            Teams.HOME => homeTeamSets >= 4 && homeTeamSets - awayTeamSets >= 2,
+            Teams.AWAY => awayTeamSets >= 4 && awayTeamSets - homeTeamSets >= 2,
+            _ => throw new ArgumentException("Invalid team")
+        };
     }
 }
