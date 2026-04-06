@@ -72,13 +72,12 @@ public class GameTests
     {
         Points homeTeamPoints = pointScoringTeam == Teams.HOME ? Points.LOVE : Points.FORTY;
         Points awayTeamPoints = pointScoringTeam == Teams.AWAY ? Points.LOVE : Points.FORTY;
-        bool hasNonScoringTeamWon = !hasScoringTeamWon;
         Game game = new(homeTeamPoints, awayTeamPoints, homeTeamSets, awayTeamSets);
 
         game.TeamScores(pointScoringTeam);
 
         Assert.Equal(hasScoringTeamWon, game.hasWonGame(pointScoringTeam));
-        Assert.Equal(hasNonScoringTeamWon, game.hasWonGame(pointScoringTeam.GetOtherTeam()));
+        Assert.False(game.hasWonGame(pointScoringTeam.GetOtherTeam()));
     }
 
     [Theory]
