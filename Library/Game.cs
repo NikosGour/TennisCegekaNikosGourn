@@ -20,4 +20,9 @@ internal class Game
     {
         throw new NotImplementedException();
     }
+
+    internal int GetSets(Teams pointScoringTeam)
+    {
+        throw new NotImplementedException();
+    }
 }
