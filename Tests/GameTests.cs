@@ -44,9 +44,72 @@ public class GameTests
     {
         Game game = new(homePlayerPoints, awayPlayerPoints);
         int expectedSetsNonScoringTeam = game.GetSets(pointScoringTeam.GetOtherTeam());
+
         game.PlayerScores(pointScoringTeam);
 
         Assert.Equal(expectedSets, game.GetSets(pointScoringTeam));
         Assert.Equal(expectedSetsNonScoringTeam, game.GetSets(pointScoringTeam.GetOtherTeam()));
+    }
+
+    [Theory]
+    [InlineData(0, 0, false, Teams.HOME)]
+    [InlineData(0, 1, false, Teams.HOME)]
+    [InlineData(0, 0, false, Teams.AWAY)]
+    [InlineData(0, 1, false, Teams.AWAY)]
+    [InlineData(3, 0, true, Teams.HOME)]
+    [InlineData(0, 3, false, Teams.HOME)]
+    [InlineData(3, 0, false, Teams.AWAY)]
+    [InlineData(0, 3, true, Teams.AWAY)]
+    [InlineData(3, 2, true, Teams.HOME)]
+    [InlineData(2, 3, true, Teams.AWAY)]
+    [InlineData(3, 3, false, Teams.HOME)]
+    [InlineData(3, 3, false, Teams.AWAY)]
+    [InlineData(50, 50, false, Teams.HOME)]
+    [InlineData(50, 50, false, Teams.AWAY)]
+    [InlineData(50, 49, true, Teams.HOME)]
+    [InlineData(49, 50, true, Teams.AWAY)]
+    public void TestScorePointWinGame(int homePlayerSets, int awayPlayerSets, bool hasScoringTeamWon, Teams pointScoringTeam)
+    {
+        Points homePlayerPoints = pointScoringTeam == Teams.HOME ? Points.LOVE : Points.FORTY;
+        Points awayPlayerPoints = pointScoringTeam == Teams.AWAY ? Points.LOVE : Points.FORTY;
+        bool hasNonScoringTeamWon = !hasScoringTeamWon;
+        Game game = new(homePlayerPoints, awayPlayerPoints, homePlayerSets, awayPlayerSets);
+
+        game.PlayerScores(pointScoringTeam);
+
+        Assert.Equal(hasScoringTeamWon, game.hasWonGame(pointScoringTeam));
+        Assert.Equal(hasNonScoringTeamWon, game.hasWonGame(pointScoringTeam.GetOtherTeam()));
+    }
+
+    [Theory]
+    [InlineData(0, 0, false, Teams.HOME)]
+    [InlineData(0, 1, false, Teams.HOME)]
+    [InlineData(0, 0, false, Teams.AWAY)]
+    [InlineData(0, 1, false, Teams.AWAY)]
+    [InlineData(4, 0, true, Teams.HOME)]
+    [InlineData(0, 4, true, Teams.HOME)]
+    [InlineData(4, 0, true, Teams.AWAY)]
+    [InlineData(0, 4, true, Teams.AWAY)]
+    [InlineData(3, 2, false, Teams.HOME)]
+    [InlineData(2, 3, false, Teams.AWAY)]
+    [InlineData(3, 3, false, Teams.HOME)]
+    [InlineData(3, 3, false, Teams.AWAY)]
+    [InlineData(50, 48, true, Teams.HOME)]
+    [InlineData(48, 50, true, Teams.AWAY)]
+    [InlineData(50, 49, false, Teams.HOME)]
+    [InlineData(49, 50, false, Teams.AWAY)]
+    public void TestScorePointAlreadyWonGame(int homePlayerSets, int awayPlayerSets, bool alreadyWonGame, Teams pointScoringTeam)
+    {
+        Game game = new(homePlayerSets, awayPlayerSets);
+
+
+        if (alreadyWonGame)
+        {
+            Assert.Throws<InvalidOperationException>(() => game.PlayerScores(pointScoringTeam));
+        }
+        else
+        {
+            game.PlayerScores(pointScoringTeam);
+        }
     }
 }
