@@ -2,6 +2,15 @@
 
 internal class Game
 {
+
+    public Game(Points homePlayerPoints, Points awayPlayerPoints)
+    {
+    }
+
+    public Game()
+    {
+    }
+
     internal Points GetScore(Teams team)
     {
         throw new NotImplementedException();

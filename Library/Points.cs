@@ -1,6 +1,6 @@
 ﻿namespace TennisCegekaNikosGourn.Library;
 
-internal enum Points
+public enum Points
 {
     LOVE,
     FIFTEEN,
