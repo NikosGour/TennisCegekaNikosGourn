@@ -70,8 +70,8 @@ public class GameTests
     [InlineData(49, 50, true, Teams.AWAY)]
     public void TestScorePointWinGame(int homeTeamSets, int awayTeamSets, bool hasScoringTeamWon, Teams pointScoringTeam)
     {
-        Points homeTeamPoints = pointScoringTeam == Teams.HOME ? Points.LOVE : Points.FORTY;
-        Points awayTeamPoints = pointScoringTeam == Teams.AWAY ? Points.LOVE : Points.FORTY;
+        Points homeTeamPoints = pointScoringTeam == Teams.HOME ? Points.FORTY : Points.LOVE;
+        Points awayTeamPoints = pointScoringTeam == Teams.AWAY ? Points.FORTY : Points.LOVE;
         Game game = new(homeTeamPoints, awayTeamPoints, homeTeamSets, awayTeamSets);
 
         game.TeamScores(pointScoringTeam);
